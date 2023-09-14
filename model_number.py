@@ -32,23 +32,25 @@ def predict(X, W, b):
 def artificial_neuron(X, y, learning_rate=0.1, n_iter=100):
     W, b = initialisation(X)
     L = []
+    acc = []
 
     for i in range(n_iter):
         A = model(X, W, b)
         L.append(log_loss(A, y))
         dW, db = gradients(A, X, y)
         W, b = update(dW, db, W, b, learning_rate)
+        y_pred = predict(X, W, b)
+        acc.append(accuracy_score(y, y_pred))
 
     x0 = np.linspace(min(X[:,0]), max(X[:,0]), 2)
     x1 = (-W[0] * x0 - b) / W[1]
+    plt.subplot(2, 1, 2)
     plt.plot(x0, x1, c='orange', lw=3)
     plt.scatter(X[:,0], X[:,1], c=y, cmap='summer')
-    plt.show()
-
-    y_pred = predict(X, W, b)
-    print(accuracy_score(y, y_pred))
-
+    plt.subplot(2, 2, 1)
     plt.plot(L)
+    plt.subplot(2, 2, 2)
+    plt.plot(acc)
     plt.show()
 
 
