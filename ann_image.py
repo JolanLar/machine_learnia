@@ -51,7 +51,6 @@ class neural_network:
             
 
         else:
-            print(self.__layers_result[-2].shape, dZ.shape)
             dW = dividend * dZ.dot(self.__layers_result[-2].T)
             db = dividend * np.sum(dZ, axis=1, keepdims=2)
 
@@ -95,7 +94,7 @@ class neural_network:
             result = self.__forward_propagation(X_train)
             self.__backward_propagation(X_train, y_train)
 
-            if i % 20 == 0:
+            if i % 10 == 0:
                 L_train.append(self.__log_loss(result, y_train))
                 y_pred = self.predict(X_train)
                 acc_train.append(accuracy_score(y_train.flatten(), y_pred.flatten()))
@@ -128,5 +127,5 @@ X_test = (X_test.reshape(X_test.shape[0], -1) / X_max).T
 y_test = y_test.T
 
 # Train the model
-nn = neural_network(size=[4096, 1])
-nn.train(X_train, y_train, X_test=X_test, y_test=y_test, n_iter=10000)
+nn = neural_network(size=[4096, 16, 1])
+nn.train(X_train, y_train, X_test=X_test, y_test=y_test, n_iter=1000)
